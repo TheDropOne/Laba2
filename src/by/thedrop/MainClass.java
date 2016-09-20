@@ -3,7 +3,8 @@ package by.thedrop;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Kuryakov on 17-Sep-16.
@@ -17,37 +18,30 @@ public class MainClass {
 
     private static void input() {
         //Число считается двоичным, если оно окружено в квадратные скобки
-        int[] a = new int[ARRAY_CAPASITY];
+        String inputString = "";
+        int[] array = new int[ARRAY_CAPASITY];
         for (int i = 0; i < ARRAY_CAPASITY; i++) {
-            a[i] = 0;
+            array[i] = 0;
         }
         int iterator = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please, input your numbers");
-        String inputString = "";
-        while (a[ARRAY_CAPASITY - 1] == 0) {
+        while (array[ARRAY_CAPASITY - 1] == 0) {
             try {
                 inputString = br.readLine();
-            } catch (IOException e) {
-                System.out.println("IOException catched!");
-                e.printStackTrace();
-            }
-            try {
-                String[] tempArray = inputString.split("/");
-                for (int i = 0; i < tempArray.length; i++) {
-                    System.out.println(tempArray[i]);
+                Pattern p = Pattern.compile("-?\\d+");
+                Matcher m = p.matcher(inputString);
+                while (m.find() && iterator < ARRAY_CAPASITY) {
+                    array[iterator] = Integer.parseInt(m.group());
+                    iterator++;
                 }
-                for (int i = 0; i < tempArray.length; i++) {
-                    if (iterator + i <= a.length) {
-                        a[iterator + i] = Integer.parseInt(tempArray[i]);
-                        System.out.println(iterator + " number =" + a[iterator]);
-                        iterator++;
-                    }
-                }
-            } catch (Exception ex) {
-                System.out.println("Unhandled exception!");
+            }catch (Exception ex){
                 ex.printStackTrace();
+                System.out.println("Something gone wrong");
             }
+        }
+        for (int a : array) {
+            System.out.println(a);
         }
     }
 
@@ -121,10 +115,11 @@ public class MainClass {
         return numberOfNumbers;
     }
 
-    private void bubbleSort(int[] array, int count){
+    private void bubbleSort(int[] array, int count) {
 
     }
-    private void radexSort(int[] array, int count){
+
+    private void radexSort(int[] array, int count) {
 
     }
 }
