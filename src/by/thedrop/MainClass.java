@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Kuryakov on 17-Sep-16.
  */
-
+//here is my smart comment
 public class MainClass {
     private static final int ARRAY_CAPASITY = 3;
     private static int[] array;
