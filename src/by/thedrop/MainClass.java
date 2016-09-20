@@ -1,25 +1,45 @@
 package by.thedrop;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by Kuryakov on 17-Sep-16.
  */
+
 public class MainClass {
     private static final int ARRAY_CAPASITY = 3;
+    private static int[] array;
 
     public static void main(String[] args) {
         input();
+
+        int k = minimum(array);
+        System.out.println("Average = " + average(array));
+        System.out.println("Maximum = " + maximum(array));
+        System.out.println("Minimum = " + k);
+        int[] generatedArray = generateArray(k);
+        int[] generatedArray2 = generateArray(k); // for another sort
+        System.out.println("Print generated array : ");
+        printArray(generatedArray);
+        System.out.println("Count of primes = " + countOfPrime(generatedArray));
+        System.out.println("Count of three dividers = " + countOfDividersByThree(generatedArray));
+        System.out.println("Bubble sort :");
+        printArray(generatedArray);
+        bubbleSort(generatedArray);
+        printArray(generatedArray);
+        System.out.println("Cocktail sort :");
+        printArray(generatedArray2);
+        cocktailSort(generatedArray2);
+        printArray(generatedArray2);
     }
 
     private static void input() {
-        //Число считается двоичным, если оно окружено в квадратные скобки
         String inputString = "";
-        int[] array = new int[ARRAY_CAPASITY];
+        array = new int[ARRAY_CAPASITY];
         for (int i = 0; i < ARRAY_CAPASITY; i++) {
             array[i] = 0;
         }
@@ -35,27 +55,28 @@ public class MainClass {
                     array[iterator] = Integer.parseInt(m.group());
                     iterator++;
                 }
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("Something gone wrong");
             }
         }
+        System.out.println("Ur numbers : ");
         for (int a : array) {
             System.out.println(a);
         }
     }
 
-    private static double average(int[] array, int count) {
+    private static double average(int[] array) {
         double summ = 0;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < array.length; i++) {
             summ += array[i];
         }
-        return summ / count;
+        return summ / array.length;
     }
 
-    private int maximum(int[] array, int count) {
+    private static int maximum(int[] array) {
         int max = array[0];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < array.length; i++) {
             if (array[i] > max) {
                 max = array[i];
             }
@@ -63,9 +84,9 @@ public class MainClass {
         return max;
     }
 
-    private int minimum(int[] array, int count) {
+    private static int minimum(int[] array) {
         int min = array[0];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < array.length; i++) {
             if (array[i] < min) {
                 min = array[i];
             }
@@ -73,17 +94,19 @@ public class MainClass {
         return min;
     }
 
-    private void generateArray(int k) {
+    private static int[] generateArray(int k) {
         int arrayCapacity = (int) (Math.random() * 100 + 100);
-        System.out.println("Array capacity =" + arrayCapacity);
+        System.out.println("Array capacity = " + arrayCapacity);
         int[] array = new int[arrayCapacity];
         for (int i = 0; i < arrayCapacity; i++) {
             array[i] = (int) (Math.random() * k);
+            System.out.print(array[i] + " ");
         }
-
+        System.out.println();
+        return array;
     }
 
-    private boolean isPrime(int number) {
+    private static boolean isPrime(int number) {
         if (number % 2 == 0) {
             return false;
         }
@@ -95,9 +118,9 @@ public class MainClass {
         return true;
     }
 
-    private int countOfPrime(int[] array, int count) {
+    private static int countOfPrime(int[] array) {
         int numberOfPrimes = 0;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < array.length; i++) {
             if (isPrime(array[i])) {
                 numberOfPrimes++;
             }
@@ -105,9 +128,9 @@ public class MainClass {
         return numberOfPrimes;
     }
 
-    private int countOfDevidersByThree(int[] array, int count) {
+    private static int countOfDividersByThree(int[] array) {
         int numberOfNumbers = 0;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i > array.length; i++) {
             if (array[i] % 3 == 0) {
                 numberOfNumbers++;
             }
@@ -115,11 +138,44 @@ public class MainClass {
         return numberOfNumbers;
     }
 
-    private void bubbleSort(int[] array, int count) {
-
+    private static void printArray(int[] array) {
+        for (int a : array) {
+            System.out.print(a + " ");
+        }
+        System.out.println();
     }
 
-    private void radexSort(int[] array, int count) {
+    private static void bubbleSort(int[] array) {
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[i] > array[j]) {
+                    int temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                }
+            }
+        }
+    }
 
+    private static void cocktailSort(int[] array) {
+        int leftBorder = 0, rightBorder = array.length-1;
+        do {
+            for (int i = leftBorder; i < rightBorder; i++) {
+                if (array[i] > array[i + 1]) {
+                    array[i] ^= array[i + 1];
+                    array[i + 1] ^= array[i];
+                    array[i] ^= array[i + 1];
+                }
+            }
+            rightBorder--;
+            for (int i = rightBorder; i > leftBorder; i--) {
+                if (array[i] < array[i - 1]) {
+                    array[i] ^= array[i - 1];
+                    array[i - 1] ^= array[i];
+                    array[i] ^= array[i - 1];
+                }
+            }
+            leftBorder++;
+        } while (leftBorder <= rightBorder);
     }
 }
