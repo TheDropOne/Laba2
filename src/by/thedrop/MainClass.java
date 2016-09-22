@@ -99,7 +99,7 @@ public class MainClass {
         System.out.println("Array capacity = " + arrayCapacity);
         int[] array = new int[arrayCapacity];
         for (int i = 0; i < arrayCapacity; i++) {
-            array[i] = (int) (Math.random() * k);
+            array[i] = (int) (Math.random() * (k+1));
             System.out.print(array[i] + " ");
         }
         System.out.println();
@@ -130,7 +130,7 @@ public class MainClass {
 
     private static int countOfDividersByThree(int[] array) {
         int numberOfNumbers = 0;
-        for (int i = 0; i > array.length; i++) {
+        for (int i = 0; i < array.length; i++) {
             if (array[i] % 3 == 0) {
                 numberOfNumbers++;
             }
