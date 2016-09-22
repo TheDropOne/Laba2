@@ -49,7 +49,7 @@ public class MainClass {
         while (array[ARRAY_CAPASITY - 1] == 0) {
             try {
                 inputString = br.readLine();
-                Pattern p = Pattern.compile("-?\\d+");
+                Pattern p = Pattern.compile("\\d+");
                 Matcher m = p.matcher(inputString);
                 while (m.find() && iterator < ARRAY_CAPASITY) {
                     array[iterator] = Integer.parseInt(m.group());
