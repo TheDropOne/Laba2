@@ -2,7 +2,6 @@ package by.thedrop;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,31 +9,35 @@ import java.util.regex.Pattern;
  * Created by Kuryakov on 17-Sep-16.
  */
 
-public class MainClass {
+public class Runner {
     private static final int ARRAY_CAPASITY = 3;
     private static int[] array;
 
     public static void main(String[] args) {
         input();
+        printArray(array);
 
         int k = minimum(array);
         System.out.println("Average = " + average(array));
         System.out.println("Maximum = " + maximum(array));
         System.out.println("Minimum = " + k);
         int[] generatedArray = generateArray(k);
-        int[] generatedArray2 = generateArray(k); // for another sort
         System.out.println("Print generated array : ");
         printArray(generatedArray);
-        System.out.println("Count of primes = " + countOfPrime(generatedArray));
+        System.out.println("Count of primes = " + countOfPrimes(generatedArray));
         System.out.println("Count of three dividers = " + countOfDividersByThree(generatedArray));
-        System.out.println("Bubble sort :");
+        System.out.println("Cocktail sort :");
+        printArray(generatedArray);
+        cocktailSort(generatedArray);
+        printArray(generatedArray);
+        System.out.println("Bubble sort : (From high to low");
         printArray(generatedArray);
         bubbleSort(generatedArray);
         printArray(generatedArray);
-        System.out.println("Cocktail sort :");
-        printArray(generatedArray2);
-        cocktailSort(generatedArray2);
-        printArray(generatedArray2);
+        System.out.println("Selection sort :");
+        printArray(generatedArray);
+        selectionSort(generatedArray);
+        printArray(generatedArray);
     }
 
     private static void input() {
@@ -50,20 +53,27 @@ public class MainClass {
             try {
                 inputString = br.readLine();
                 Pattern hex = Pattern.compile("\\d+");
-                Pattern binary = Pattern.compile("[?\\d+]?");
-                Matcher m = hex.matcher(inputString);
-                while (m.find() && iterator < ARRAY_CAPASITY) {
-                    array[iterator] = Integer.parseInt(m.group());
+                Pattern binary = Pattern.compile("\\[[0-1]\\d+\\]");
+                Matcher hexMatcher = hex.matcher(inputString);
+                Matcher binaryMatcher = binary.matcher(inputString);
+                while (binaryMatcher.find() && iterator < ARRAY_CAPASITY) {
+                    String s = binaryMatcher.group();
+                    try {
+                        array[iterator] = Integer.parseInt(s.substring(1, s.length() - 2), 2);
+                        iterator++;
+                    }catch (Exception ex){
+
+                    }
+                }
+                System.out.println("Found binaries = " + iterator);
+                while (hexMatcher.find() && iterator < ARRAY_CAPASITY) {
+                    array[iterator] = Integer.parseInt(hexMatcher.group());
                     iterator++;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("Something gone wrong");
             }
-        }
-        System.out.println("Ur numbers : ");
-        for (int a : array) {
-            System.out.println(a);
         }
     }
 
@@ -119,7 +129,7 @@ public class MainClass {
         return true;
     }
 
-    private static int countOfPrime(int[] array) {
+    private static int countOfPrimes(int[] array) {
         int numberOfPrimes = 0;
         for (int i = 0; i < array.length; i++) {
             if (isPrime(array[i])) {
@@ -149,7 +159,7 @@ public class MainClass {
     private static void bubbleSort(int[] array) {
         for (int i = 0; i < array.length - 1; i++) {
             for (int j = i + 1; j < array.length; j++) {
-                if (array[i] > array[j]) {
+                if (array[i] < array[j]) {
                     int temp = array[i];
                     array[i] = array[j];
                     array[j] = temp;
