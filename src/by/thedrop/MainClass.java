@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Kuryakov on 17-Sep-16.
  */
- 
+
 public class MainClass {
     private static final int ARRAY_CAPASITY = 3;
     private static int[] array;
@@ -38,7 +38,7 @@ public class MainClass {
     }
 
     private static void input() {
-        String inputString = "";
+        String inputString;
         array = new int[ARRAY_CAPASITY];
         for (int i = 0; i < ARRAY_CAPASITY; i++) {
             array[i] = 0;
@@ -68,8 +68,8 @@ public class MainClass {
 
     private static double average(int[] array) {
         double summ = 0;
-        for (int i = 0; i < array.length; i++) {
-            summ += array[i];
+        for (int anArray : array) {
+            summ += anArray;
         }
         return summ / array.length;
     }
@@ -99,7 +99,7 @@ public class MainClass {
         System.out.println("Array capacity = " + arrayCapacity);
         int[] array = new int[arrayCapacity];
         for (int i = 0; i < arrayCapacity; i++) {
-            array[i] = (int) (Math.random() * (k+1));
+            array[i] = (int) (Math.random() * (k + 1));
             System.out.print(array[i] + " ");
         }
         System.out.println();
@@ -158,7 +158,7 @@ public class MainClass {
     }
 
     private static void cocktailSort(int[] array) {
-        int leftBorder = 0, rightBorder = array.length-1;
+        int leftBorder = 0, rightBorder = array.length - 1;
         do {
             for (int i = leftBorder; i < rightBorder; i++) {
                 if (array[i] > array[i + 1]) {
@@ -177,5 +177,23 @@ public class MainClass {
             }
             leftBorder++;
         } while (leftBorder <= rightBorder);
+    }
+
+    private static void selectionSort(int[] array) {
+        for (int i = 0; i < array.length; i++) {
+            int min = array[i];
+            int min_i = i;
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[j] < min) {
+                    min = array[j];
+                    min_i = j;
+                }
+            }
+            if (i != min_i) {
+                int tmp = array[i];
+                array[i] = array[min_i];
+                array[min_i] = tmp;
+            }
+        }
     }
 }
